@@ -1,0 +1,139 @@
+<UserControl x:Class="ERechnungPruefung.Views.UcZugferdRechnungAnzeige"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="10" DataContext="{Binding ZugferdRechnung}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0">
+                    <TextBlock FontWeight="Bold" FontSize="14" Text="Lieferant" Margin="0,0,0,6"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="130"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Name:" FontWeight="Bold" Margin="0,2" VerticalAlignment="Center"/>
+                        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding LieferantName, Mode=OneWay}" IsReadOnly="True" Margin="0,2"/>
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Adresse:" FontWeight="Bold" Margin="0,2" VerticalAlignment="Center"/>
+                        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding LieferantStrasse, Mode=OneWay}" IsReadOnly="True" Margin="0,2"/>
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="PLZ / Ort:" FontWeight="Bold" Margin="0,2" VerticalAlignment="Center"/>
+                        <TextBox Grid.Row="2" Grid.Column="1" IsReadOnly="True" Margin="0,2">
+                            <TextBox.Text>
+                                <MultiBinding StringFormat="{}{0} {1}">
+                                    <Binding Path="LieferantPlz" Mode="OneWay"/>
+                                    <Binding Path="LieferantOrt" Mode="OneWay"/>
+                                </MultiBinding>
+                            </TextBox.Text>
+                        </TextBox>
+                        <TextBlock Grid.Row="3" Grid.Column="0" Text="USt-ID:" FontWeight="Bold" Margin="0,2" VerticalAlignment="Center"/>
+                        <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding LieferantUstId, Mode=OneWay}" IsReadOnly="True" Margin="0,2"/>
+                    </Grid>
+                </StackPanel>
+
+                <StackPanel Grid.Column="2">
+                    <TextBlock FontWeight="Bold" FontSize="14" Text="Rechnungskopf" Margin="0,0,0,6"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Rg. Nummer:" FontWeight="Bold" Margin="0,2" VerticalAlignment="Center"/>
+                        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Rechnungsnummer, Mode=OneWay}" IsReadOnly="True" Margin="0,2"/>
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Rg. Datum:" FontWeight="Bold" Margin="0,2" VerticalAlignment="Center"/>
+                        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Rechnungsdatum, StringFormat=dd.MM.yyyy, Mode=OneWay}" IsReadOnly="True" Margin="0,2"/>
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Fällig am:" FontWeight="Bold" Margin="0,2" VerticalAlignment="Center"/>
+                        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Faelligkeitsdatum, StringFormat=dd.MM.yyyy, Mode=OneWay}" IsReadOnly="True" Margin="0,2"/>
+                        <TextBlock Grid.Row="3" Grid.Column="0" Text="Währung:" FontWeight="Bold" Margin="0,2" VerticalAlignment="Center"/>
+                        <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Waehrung, Mode=OneWay}" IsReadOnly="True" Margin="0,2"/>
+                        <TextBlock Grid.Row="4" Grid.Column="0" Text="Netto:" FontWeight="Bold" Margin="0,2" VerticalAlignment="Center"/>
+                        <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Nettobetrag, StringFormat=N2, Mode=OneWay}" IsReadOnly="True" Margin="0,2"/>
+                        <TextBlock Grid.Row="5" Grid.Column="0" Text="Brutto:" FontWeight="Bold" Margin="0,2" VerticalAlignment="Center"/>
+                        <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding Bruttobetrag, StringFormat=N2, Mode=OneWay}" IsReadOnly="True" Margin="0,2"/>
+                    </Grid>
+                </StackPanel>
+            </Grid>
+
+            <Grid Margin="0,12,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="130"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="Kontoinhaber:" FontWeight="Bold" Margin="0,2" VerticalAlignment="Center"/>
+                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding LieferantKontoinhaber, Mode=OneWay}" IsReadOnly="True" Margin="0,2"/>
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="IBAN:" FontWeight="Bold" Margin="0,2" VerticalAlignment="Center"/>
+                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding LieferantIban, Mode=OneWay}" IsReadOnly="True" Margin="0,2"/>
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="BIC:" FontWeight="Bold" Margin="0,2" VerticalAlignment="Center"/>
+                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding LieferantBic, Mode=OneWay}" IsReadOnly="True" Margin="0,2"/>
+                <TextBlock Grid.Row="3" Grid.Column="0" Text="Verw.:" FontWeight="Bold" Margin="0,2" VerticalAlignment="Center"/>
+                <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Verwendungszweck, Mode=OneWay}" IsReadOnly="True" Margin="0,2"/>
+            </Grid>
+
+            <TextBlock FontWeight="Bold" FontSize="14" Text="Positionen" Margin="0,12,0,6"/>
+            <DataGrid ItemsSource="{Binding Positionen}" AutoGenerateColumns="False" IsReadOnly="True"
+                      CanUserAddRows="False" GridLinesVisibility="Horizontal" HeadersVisibility="Column"
+                      RowDetailsVisibilityMode="Collapsed" MaxHeight="400">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Pos." Binding="{Binding PositionNummer}" Width="40"/>
+                    <DataGridTextColumn Header="Bezeichnung" Binding="{Binding Bezeichnung}" Width="*"/>
+                    <DataGridTextColumn Header="Menge" Binding="{Binding Menge, StringFormat=N2}" Width="70">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Right"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="Einheit" Binding="{Binding Einheit}" Width="60"/>
+                    <DataGridTextColumn Header="Einzelpreis" Binding="{Binding Einzelpreis, StringFormat=N2}" Width="90">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Right"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="Gesamt" Binding="{Binding Gesamtpreis, StringFormat=N2}" Width="90">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Right"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="MwSt %" Binding="{Binding Steuersatz, StringFormat=N1}" Width="70">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Right"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

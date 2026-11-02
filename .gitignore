@@ -1,0 +1,16 @@
+## .NET / Visual Studio
+bin/
+obj/
+.vs/
+*.user
+*.suo
+*.userprefs
+*.rsuser
+*.cache
+*.log
+TestResults/
+packages/
+*.nupkg
+
+## Claude Code lokale Einstellungen
+.claude/settings.local.json

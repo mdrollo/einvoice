@@ -1,0 +1,47 @@
+<Window x:Class="ERechnungPruefung.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
+        xmlns:views="clr-namespace:ERechnungPruefung.Views"
+        Title="{Binding Title}" Width="1100" Height="800"
+        WindowStartupLocation="CenterScreen"
+        AllowDrop="True" Drop="Window_Drop" DragOver="Window_DragOver">
+    <DockPanel>
+        <ToolBar DockPanel.Dock="Top">
+            <Button Command="{Binding OpenFileCommand}" Content="Datei öffnen…" Padding="8,2"/>
+            <Separator/>
+            <TextBlock Text="{Binding FilePath}" VerticalAlignment="Center" Margin="6,0"/>
+        </ToolBar>
+
+        <Border DockPanel.Dock="Top" Background="#FFFDE7E7" BorderBrush="#FFD32F2F" BorderThickness="0,0,0,1"
+                Padding="10,6" Visibility="{Binding HasMessage, Converter={StaticResource BoolToVisibilityConverter}}">
+            <TextBlock Text="{Binding Message}" Foreground="#FFB71C1C" TextWrapping="Wrap"/>
+        </Border>
+
+        <Grid>
+            <TabControl SelectedIndex="{Binding SelectedTabIndex}">
+                <TabItem Header="Dokument">
+                    <wv2:WebView2 x:Name="webView" Source="{Binding DocumentSource}"/>
+                </TabItem>
+                <TabItem Header="E-Rechnung">
+                    <views:UcZugferdRechnungAnzeige/>
+                </TabItem>
+            </TabControl>
+
+            <TextBlock Text="ZUGFeRD-/XRechnung-Datei (PDF oder XML) hierher ziehen oder über „Datei öffnen…“ laden."
+                       HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Gray" FontSize="14"
+                       IsHitTestVisible="False">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding FilePath}" Value="{x:Null}">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+        </Grid>
+    </DockPanel>
+</Window>
