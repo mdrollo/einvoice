@@ -1,0 +1,76 @@
+name: Build & Setup
+
+on:
+  push:
+    branches: [ '**' ]
+    tags: [ 'v*' ]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write   # nötig, um bei Tags ein Release anzulegen
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: .NET SDK einrichten
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Version bestimmen
+        id: version
+        shell: pwsh
+        run: |
+          if ("${{ github.ref_type }}" -eq "tag" -and "${{ github.ref_name }}" -match '^v(\d+\.\d+\.\d+)') {
+            $version = $Matches[1]
+          } else {
+            $version = "0.1.${{ github.run_number }}"
+          }
+          "version=$version" >> $env:GITHUB_OUTPUT
+          Write-Host "Version: $version"
+
+      - name: Restore
+        run: dotnet restore ERechnungPruefung.csproj -r win-x64
+
+      - name: Publish (self-contained, win-x64)
+        run: >
+          dotnet publish ERechnungPruefung.csproj
+          -c Release -r win-x64 --self-contained true --no-restore
+          -p:Version=${{ steps.version.outputs.version }}
+          -o publish
+
+      - name: Inno Setup installieren
+        shell: pwsh
+        run: |
+          if (-not (Test-Path "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe")) {
+            choco install innosetup --no-progress -y
+          }
+
+      - name: Setup erzeugen
+        shell: pwsh
+        run: |
+          & "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe" `
+            "/DAppVersion=${{ steps.version.outputs.version }}" `
+            "/DSourceDir=$PWD\publish" `
+            "/DOutputDir=$PWD\setup-output" `
+            installer\ERechnungPruefung.iss
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Setup als Artefakt hochladen
+        uses: actions/upload-artifact@v4
+        with:
+          name: ERechnungPruefung-Setup-${{ steps.version.outputs.version }}
+          path: setup-output/*.exe
+
+      - name: Release anlegen (nur bei Tag v*)
+        if: github.ref_type == 'tag'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: setup-output/*.exe
+          generate_release_notes: true

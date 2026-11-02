@@ -14,3 +14,7 @@ packages/
 
 ## Claude Code lokale Einstellungen
 .claude/settings.local.json
+
+## Build-Ausgaben
+publish/
+setup-output/
