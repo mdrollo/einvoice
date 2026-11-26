@@ -67,6 +67,7 @@ jobs:
         with:
           name: ERechnungPruefung-Setup-${{ steps.version.outputs.version }}
           path: setup-output/*.exe
+          retention-days: 5 # Speicher des Kontos ist knapp; dauerhaft liegen Setups im Release
 
       - name: Release anlegen (nur bei Tag v*)
         if: github.ref_type == 'tag'
